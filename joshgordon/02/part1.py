@@ -12,7 +12,7 @@ with open(infilename, 'r') as infile:
   buf= [line.strip().split() for line in infile]
 
 max_col = max([len(x) for x in buf])
-print max_col
+print(max_col)
 
 
 
@@ -24,5 +24,5 @@ for line in buf:
     maximum = max(maximum, int(line[i]))
     minimum = min(minimum, int(line[i]))
   row_checksums.append(int(maximum) - int(minimum))
-  print (maximum, minimum)
-print sum(row_checksums)
+  print(maximum, minimum)
+print(sum(row_checksums))
