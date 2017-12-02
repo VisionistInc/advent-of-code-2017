@@ -39,18 +39,20 @@ func main() {
 	}
 	fmt.Println(cksum)
 
-	// for each number in a sorted row, divide the sorted numbers by that number
-	// and bail on fmod 1.0 = 0.0
+	// for each number in a sorted row, divide the remaining sorted numbers by
+	// that number and bail on accumulating fmod by 1.0 = 0.0
 	var divsum float64
 	for _, row := range numbers {
 		sort.Float64s(row)
 		var n1, n2 float64
 		for ii, number := range row {
+		lookingfordivisor:
 			for _, greaternumber := range row[ii+1:] {
 				if math.Mod(greaternumber/number, 1.0) == 0.0 {
 					n1 = number
 					n2 = greaternumber
 					divsum += (n2 / n1)
+					break lookingfordivisor
 				}
 			}
 		}
