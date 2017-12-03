@@ -13,7 +13,7 @@ fn sum(numbers: &Vec<u32>, step: usize) -> u64 {
 }
 
 fn main() {
-    let mut f = File::open("../input").unwrap();
+    let mut f = File::open("../input.txt").unwrap();
     let mut input = String::new();
     f.read_to_string(&mut input);
     
