@@ -3,6 +3,7 @@ use std::io::BufRead;
 use std::ops::Deref;
 
 mod day1;
+mod day2;
 
 fn main() {
     let stdin = stdin();
@@ -20,6 +21,7 @@ fn main() {
     let ref day = args[1];
     match day.deref() {
         "day1" => day1::solve(&mut (handle.lines())),
+        "day2" => day2::solve(&mut (handle.lines())),
 
         _ => println!("Unknown day: {}", args[1]),
     }
