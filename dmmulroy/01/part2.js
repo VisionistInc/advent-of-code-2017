@@ -8,18 +8,10 @@ const sanitizedInput = input
   .map(Number);
 
 const inverseCaptcha = arr =>
-  arr.reduce((prev, curr, idx) => {
-    if (idx === 0) return prev;
-
-    if (idx === arr.length - 1) {
-      if (arr[idx - 1] === curr) prev += curr;
-
-      return arr[0] == curr ? prev + curr : prev;
-    }
-
-    if (arr[idx - 1] === curr) return prev + curr;
-
-    return prev;
-  }, 0);
+  arr.reduce(
+    (prev, curr, idx) =>
+      arr[(idx + arr.length / 2) % arr.length] === curr ? prev + curr : prev,
+    0
+  );
 
 console.log('output:', inverseCaptcha(sanitizedInput));
