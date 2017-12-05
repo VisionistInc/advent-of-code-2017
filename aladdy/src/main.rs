@@ -5,6 +5,7 @@ use std::ops::Deref;
 mod day1;
 mod day2;
 mod day3;
+mod day4;
 
 fn main() {
     let stdin = stdin();
@@ -24,6 +25,7 @@ fn main() {
         "day1" => day1::solve(&mut (handle.lines())),
         "day2" => day2::solve(&mut (handle.lines())),
         "day3" => day3::solve(&mut (handle.lines())),
+        "day4" => day4::solve(&mut (handle.lines())),
 
         _ => println!("Unknown day: {}", args[1]),
     }
