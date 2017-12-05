@@ -13,10 +13,9 @@ const countSteps = arr => {
   let steps = 0;
 
   while (idx < arr.length) {
-    let currIdx = idx;
-    let currVal = arr[idx];
-    idx += currVal;
-    arr[currIdx] = currVal >= 3 ? arr[currIdx] - 1 : arr[currIdx] + 1;
+    let val = arr[idx];
+    arr[idx] = val >= 3 ? val - 1 : val + 1;
+    idx += val;
     steps++;
   }
 
