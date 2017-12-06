@@ -23,7 +23,7 @@ func (s ReverseSortableBytes) Less(i, j int) bool {
 	return s[i] > s[j]
 }
 
-// md5 hash a byte slice:
+// md5 hash a byte slice as a string so it can be used as a map key:
 func hash(bytes []byte) string {
 	return fmt.Sprintf("%x", md5.Sum(bytes))
 }
