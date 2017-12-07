@@ -7,6 +7,7 @@ mod day2;
 mod day3;
 mod day4;
 mod day5;
+mod day6;
 
 fn main() {
     let stdin = stdin();
@@ -28,6 +29,7 @@ fn main() {
         "day3" => day3::solve(&mut (handle.lines())),
         "day4" => day4::solve(&mut (handle.lines())),
         "day5" => day5::solve(&mut (handle.lines())),
+        "day6" => day6::solve(&mut (handle.lines())),
 
         _ => println!("Unknown day: {}", args[1]),
     }
