@@ -86,21 +86,37 @@ fn ascend(name: &str, nodes: &HashMap<String, Program>) {
         .iter()
         .map(|x| subtower_weight(x, &nodes))
         .collect();
+
+    // Put all weights into a hash
+    let mut weight_count = HashMap::<u64, u8>::new();
+    let mut mismatch = false;
     for w in &weights {
+        *(weight_count.entry(*w).or_insert(0)) += 1;
         if *w != weights[0] {
-            println!("Mismatch {} != {}", w, weights[0]);
-            break;
+            mismatch = true;
         }
     }
+
     if node.children.len() > 0 {
         println!(
             "{} ({}) -> {:?}",
             name,
             node.weight,
-            node.children.iter().zip(weights).collect::<Vec<_>>()
+            node.children.iter().zip(weights.clone()).collect::<Vec<_>>()
         );
     }
-    for c in &node.children {
-        ascend(c, &nodes);
+
+    if mismatch {
+        // Figure out WHICH child was not like the others
+        let mut bad_weight = 0;
+        for w in &weight_count {
+            if *w.1 == 1 {
+                bad_weight = *w.0;
+                break;
+            }
+        }
+        // Which index is the bad weight? That's the problem child
+        let bad_child_index = weights.iter().position(|x| x == &bad_weight).unwrap();
+        ascend(&node.children[bad_child_index], &nodes);
     }
 }
