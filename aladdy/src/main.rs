@@ -2,14 +2,16 @@ use std::io::stdin;
 use std::io::BufRead;
 use std::ops::Deref;
 
-mod day1;
-mod day2;
-mod day3;
-mod day4;
-mod day5;
-mod day6;
-mod day7;
-mod day8;
+mod day01;
+mod day02;
+mod day03;
+mod day04;
+mod day05;
+mod day06;
+mod day07;
+mod day08;
+mod day09;
+mod day10;
 
 fn main() {
     let stdin = stdin();
@@ -17,24 +19,26 @@ fn main() {
 
     let args: Vec<String> = std::env::args().collect();
     if args.len() < 2 {
-        println!("missing argument for day to run");
+        println!("missing argument for day0 to run");
         return;
     } else if args.len() > 2 {
         println!("too many arguments");
         return;
     }
 
-    let ref day = args[1];
-    match day.deref() {
-        "day1" => day1::solve(&mut (handle.lines())),
-        "day2" => day2::solve(&mut (handle.lines())),
-        "day3" => day3::solve(&mut (handle.lines())),
-        "day4" => day4::solve(&mut (handle.lines())),
-        "day5" => day5::solve(&mut (handle.lines())),
-        "day6" => day6::solve(&mut (handle.lines())),
-        "day7" => day7::solve(&mut (handle.lines())),
-        "day8" => day8::solve(&mut (handle.lines())),
+    let ref day0 = args[1];
+    match day0.deref() {
+        "day01" => day01::solve(&mut (handle.lines())),
+        "day02" => day02::solve(&mut (handle.lines())),
+        "day03" => day03::solve(&mut (handle.lines())),
+        "day04" => day04::solve(&mut (handle.lines())),
+        "day05" => day05::solve(&mut (handle.lines())),
+        "day06" => day06::solve(&mut (handle.lines())),
+        "day07" => day07::solve(&mut (handle.lines())),
+        "day08" => day08::solve(&mut (handle.lines())),
+        "day09" => day09::solve(&mut (handle.lines())),
+        "day10" => day10::solve(&mut (handle.lines())),
 
-        _ => println!("Unknown day: {}", args[1]),
+        _ => println!("Unknown day0: {}", args[1]),
     }
 }
