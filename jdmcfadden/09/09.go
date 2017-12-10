@@ -11,12 +11,12 @@ func main() {
 		panic(err)
 	}
 
+	// example inputs
 	// stream = []byte("{{<a!>},{<a!>},{<a!>},{<ab>}}")
 	// stream = []byte("<{o\"i!a,<{i<a>")
 
 	var depth, sum, garbageCount int
-	var inGarbage bool
-	var skipNext bool
+	var inGarbage, skipNext bool
 
 	for _, char := range stream {
 		if inGarbage {
@@ -26,11 +26,12 @@ func main() {
 				continue
 			}
 
-			if char == '>' {
+			switch char {
+			case '>':
 				inGarbage = false
-			} else if char == '!' {
+			case '!':
 				skipNext = true
-			} else {
+			default:
 				garbageCount++
 			}
 		} else {
@@ -42,10 +43,8 @@ func main() {
 				inGarbage = true
 			case '}':
 				depth--
-			case ',':
-				// no-op
 			default:
-				// no-op
+				// no-op, includes ','
 			}
 		}
 	}
