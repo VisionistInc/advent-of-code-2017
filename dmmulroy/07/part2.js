@@ -51,4 +51,27 @@ const createTreeMap = input => {
   }, {});
 };
 
-console.log('output', createTreeMap(sanitizedInput));
+const treeMap = createTreeMap(sanitizedInput);
+
+const root = Object.keys(treeMap)[0];
+
+const sumChildrenWeights = ({ weight, children }) => {
+  if (children.length === 0) {
+    return { weight, totalWeight: Number(weight) };
+  } else {
+    return {
+      weight,
+      totalWeight: children.reduce(
+        (prev, curr) => prev + sumChildrenWeights(curr).totalWeight,
+        Number(weight)
+      )
+    };
+  }
+};
+
+const findUnbalancedDisc = treeMap => {
+  const summedWeights = treeMap.children.map(sumChildrenWeights);
+  console.log('summedWeights', summedWeights);
+};
+
+console.log('output', findUnbalancedDisc(createTreeMap(sanitizedInput)[root]));
