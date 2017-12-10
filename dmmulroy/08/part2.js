@@ -4,11 +4,11 @@ const path = require('path');
 const input = fs.readFileSync(path.join(__dirname, 'input.txt'), 'utf8');
 
 const evaluateCondition = (
-  comparisonOpertator,
+  comparisonOperator,
   comparisonRegister,
   comparisonValue
 ) => {
-  switch (comparisonOpertator) {
+  switch (comparisonOperator) {
     case '>':
       return Number(comparisonRegister) > Number(comparisonValue);
     case '<':
@@ -39,7 +39,7 @@ const sanitizedInput = input
         amount,
         _,
         comparisonRegister,
-        comparisonOpertator,
+        comparisonOperator,
         comparisonValue
       ] = curr.split(' ');
 
@@ -52,7 +52,7 @@ const sanitizedInput = input
       }
 
       const evaluation = evaluateCondition(
-        comparisonOpertator,
+        comparisonOperator,
         prev[comparisonRegister],
         comparisonValue
       );
