@@ -69,9 +69,40 @@ const sumChildrenWeights = ({ weight, children }) => {
   }
 };
 
+const calcAdjustment = summedWeights =>
+  summedWeights.reduce((prev, curr, idx) => {
+    const { weight, totalWeight } = curr;
+
+    if (prev[totalWeight]) {
+      prev[totalWeight]++;
+    } else {
+      prev[totalWeight] = 1;
+    }
+
+    if (idx === summedWeights.length - 1) {
+      const adjustmentKey = Number(
+        Object.keys(prev).filter(key => prev[key] === 1)[0]
+      );
+
+      delete prev[adjustmentKey];
+      const otherKey = Number(Object.keys(prev)[0]);
+      return adjustmentKey > otherKey
+        ? [adjustmentKey - otherKey, adjustmentKey]
+        : [otherKey - adjustmentKey, adjustmentKey];
+    }
+
+    return prev;
+  }, {});
+
 const findUnbalancedDisc = treeMap => {
   const summedWeights = treeMap.children.map(sumChildrenWeights);
-  console.log('summedWeights', summedWeights);
+  const [adjustment, keyToAdjust] = calcAdjustment(summedWeights);
+  return summedWeights.reduce((prev, curr) => {
+    if (curr.totalWeight == keyToAdjust) {
+      return curr.weight - adjustment;
+    }
+    return prev;
+  }, 0);
 };
 
 console.log('output', findUnbalancedDisc(createTreeMap(sanitizedInput)[root]));
