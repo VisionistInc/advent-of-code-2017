@@ -2,6 +2,7 @@
 #include <fstream>
 #include <sstream>
 #include <vector>
+#include <iomanip>
 using namespace std;
 
 void reverse(int currPos, int currLength, vector<int> &numbers) {
@@ -35,29 +36,52 @@ void reverse(int currPos, int currLength, vector<int> &numbers) {
   }
 }
 
+template< typename T >
+string int_to_hex( T i )
+{
+  stringstream stream;
+  stream << setfill ('0') << setw(2)
+         << hex << i;
+  return stream.str();
+}
+
+
 int main() {
   ifstream inputFile("./input.txt");
-  string currLine;
   vector<int>numbers;
+  vector<int>lengths;
+  int addLengths[] = {17, 31, 73, 47, 23};
   int currPos = 0;
   int skipSize = 0;
-  int currLength = 0;
+  char currChar;
 
   // create the vector
   for (int i=0; i<=255; ++i) numbers.push_back(i);
 
-  while (getline(inputFile, currLine)) {
-    stringstream ss(currLine);
-    while (ss >> currLength) {
-      reverse(currPos, currLength, numbers);
+  // create the list of lengths and append the hardcoded lengths
+  while (inputFile >> currChar) lengths.push_back(int(currChar));
+  for (int addLength: addLengths) lengths.push_back(addLength);
 
-      currPos += currLength + skipSize++;
+  // run 64 times
+  for (int i=0; i < 64; ++i) {
+    for (int j=0; j<lengths.size(); ++j) {
+      reverse(currPos, lengths[j], numbers);
+
+      currPos += lengths[j] + skipSize++;
       if (currPos > 255) currPos = currPos % 256;
-
-      // get the next length
-      if (ss.peek() == ',') ss.ignore();
     }
   }
 
-  cout << numbers[0] * numbers[1] << "\n";
+  vector<int>denseHash;
+
+  for (int i=0; i<16; ++i) {
+    int xorResult = 0;
+    for (int j=0; j<16; ++j) {
+      xorResult ^= numbers[i*16+j];
+    }
+    denseHash.push_back(xorResult);
+  }
+
+  for (int i = 0; i< denseHash.size(); ++i) cout << int_to_hex(denseHash[i]);
+  cout << "\n";
 }
