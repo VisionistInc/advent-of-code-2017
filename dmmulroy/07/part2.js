@@ -94,7 +94,7 @@ const calcAdjustment = summedWeights =>
     return prev;
   }, {});
 
-const findUnbalancedDisc = treeMap => {
+const findUnbalancedDiscAdjustedWeight = treeMap => {
   const summedWeights = treeMap.children.map(sumChildrenWeights);
   const [adjustment, keyToAdjust] = calcAdjustment(summedWeights);
   return summedWeights.reduce((prev, curr) => {
@@ -105,4 +105,7 @@ const findUnbalancedDisc = treeMap => {
   }, 0);
 };
 
-console.log('output', findUnbalancedDisc(createTreeMap(sanitizedInput)[root]));
+console.log(
+  'output',
+  findUnbalancedDiscAdjustedWeight(createTreeMap(sanitizedInput)[root])
+);
