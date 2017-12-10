@@ -57,6 +57,7 @@ const root = Object.keys(treeMap)[0];
 
 const sumChildrenWeights = ({ weight, children }) => {
   if (children.length === 0) {
+    console.log('weight', weight);
     return { weight, totalWeight: Number(weight) };
   } else {
     return {
@@ -105,7 +106,9 @@ const findUnbalancedDiscAdjustedWeight = treeMap => {
   }, 0);
 };
 
-console.log(
-  'output',
-  findUnbalancedDiscAdjustedWeight(createTreeMap(sanitizedInput)[root])
-);
+console.log(sumChildrenWeights(treeMap[root].children[0].children[0]));
+
+// console.log(
+//   'output',
+//   findUnbalancedDiscAdjustedWeight(createTreeMap(sanitizedInput)[root])
+// );
