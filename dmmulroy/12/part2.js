@@ -30,9 +30,9 @@ const countVertices = (adjList, sourceVertex) => {
 };
 
 const countGroups = adjList => {
-  const groupsByVertex = adjList
-    .map((_, idx) => countVertices(adjList, idx))
-    .map(JSON.stringify);
+  const groupsByVertex = adjList.map((_, idx) =>
+    JSON.stringify(countVertices(adjList, idx))
+  );
 
   return groupsByVertex.reduce((prev, curr) => {
     prev.add(curr);
