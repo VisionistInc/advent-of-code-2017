@@ -15,9 +15,9 @@ const sanitizedInput = input
 
 const dfs = (adjList, vertex, marked) => {
   marked[vertex] = true;
-  adjList[vertex].forEach(edge => {
-    if (!marked[edge]) {
-      dfs(adjList, edge, marked);
+  adjList[vertex].forEach(connectedVertex => {
+    if (!marked[connectedVertex]) {
+      dfs(adjList, connectedVertex, marked);
     }
   });
 };
