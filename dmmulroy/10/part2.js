@@ -10,27 +10,29 @@ const createList = () => {
 
 const convertToASCII = str => str.split('').map(char => char.charCodeAt());
 
-const knotHash = (list, lengths) => {
+const knotHash = input => {
+  let copiedList = createList();
   let skip = 0;
   let currentPos = 0;
   let denseHash = [];
 
-  lengths.push(...[17, 31, 73, 47, 23]);
+  const asciiLengths = convertToASCII(input).concat(...[17, 31, 73, 47, 23]);
 
   for (let rounds = 0; rounds < 64; rounds++) {
-    lengths.forEach(length => {
+    asciiLengths.forEach(length => {
       let sliceToReverse = [];
 
       for (let idx = 0; idx < length; idx++) {
-        sliceToReverse[idx] = list[(currentPos + idx) % list.length];
+        sliceToReverse[idx] =
+          copiedList[(currentPos + idx) % copiedList.length];
       }
 
       for (let idx = 0; idx < length; idx++) {
-        list[(currentPos + idx) % list.length] =
+        copiedList[(currentPos + idx) % copiedList.length] =
           sliceToReverse[length - idx - 1];
       }
 
-      currentPos += (length + skip) % list.length;
+      currentPos += (length + skip) % copiedList.length;
       skip++;
     });
   }
@@ -38,7 +40,7 @@ const knotHash = (list, lengths) => {
   for (let block = 0; block < 16; block++) {
     let XOR = 0;
     for (let blockValue = 0; blockValue < 16; blockValue++) {
-      XOR = XOR ^ list[block * 16 + blockValue];
+      XOR = XOR ^ copiedList[block * 16 + blockValue];
     }
     denseHash[block] = XOR;
   }
@@ -50,5 +52,7 @@ const knotHash = (list, lengths) => {
     })
     .join('');
 };
+// uncomment for output/answer
+// console.log(knotHash(lengths));
 
-console.log(knotHash(createList(), convertToASCII(lengths)));
+module.exports = knotHash;
