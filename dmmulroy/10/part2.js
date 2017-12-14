@@ -15,10 +15,10 @@ const knotHash = (list, lengths) => {
   let currentPos = 0;
   let denseHash = [];
 
-  lengths.push(...[17, 31, 73, 47, 23]);
+  const asciiLengths = convertToASCII(lengths).push(...[17, 31, 73, 47, 23]);
 
   for (let rounds = 0; rounds < 64; rounds++) {
-    lengths.forEach(length => {
+    asciiLengths.forEach(length => {
       let sliceToReverse = [];
 
       for (let idx = 0; idx < length; idx++) {
@@ -52,3 +52,5 @@ const knotHash = (list, lengths) => {
 };
 
 console.log(knotHash(createList(), convertToASCII(lengths)));
+
+module.exports = knotHash;
