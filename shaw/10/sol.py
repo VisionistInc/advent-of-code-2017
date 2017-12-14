@@ -19,7 +19,7 @@ for l in lens:
     nums_l = nums[:l]
     nums_r = nums[l:]
     # create new list with reversed entries
-    nums = list(reversed(nums_l)) + nums_r
+    nums = list(reversed(nums_l)) + list(nums_r)
 
     # how much total are we skipping (account for going around)
     tot = (l + skip) %256
@@ -27,7 +27,7 @@ for l in lens:
     # reorder list so it starts with next position
     # change marker to keep track of where index 0 moved
     nums = nums[tot:] + nums[:tot]
-    marker = marker[tot:] + marker[:tot]
+    marker = list(marker[tot:]) + list(marker[:tot])
 
     skip += 1
 
@@ -52,12 +52,12 @@ for i in range(64):
     
         nums_l = nums[:l]
         nums_r = nums[l:]
-        nums = list(reversed(nums_l)) + nums_r
+        nums = list(reversed(nums_l)) + list(nums_r)
 
         tot = (l + skip) %256
 
         nums = nums[tot:] + nums[:tot]
-        marker = marker[tot:] + marker[:tot]
+        marker = list(marker[tot:]) + list(marker[:tot])
 
         skip += 1
 

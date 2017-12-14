@@ -38,7 +38,7 @@ for line in lines:
     vals = line.strip().split(': ')
     if len(vals) != 2:
         continue
-    vals = map(int, vals)
+    vals = list(map(int, vals))
     # if the next depth is a few past the last one
     while len(depths) < vals[0]:
         # append some depths with 0 range
