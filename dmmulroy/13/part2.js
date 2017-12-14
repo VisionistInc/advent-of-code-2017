@@ -53,7 +53,7 @@ const calcSafeDelay = firewall => {
   let safe = false;
 
   while (!safe) {
-    console.log('delay', delay);
+    // console.log('delay', delay);
     for (let idx = 0; idx < firewall.length; idx++) {
       safe = true;
       if (
@@ -64,6 +64,8 @@ const calcSafeDelay = firewall => {
         break;
       }
     }
+
+    if (safe) break;
 
     delay++;
   }
