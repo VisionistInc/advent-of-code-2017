@@ -49,31 +49,26 @@ const scanFirewall = firewall =>
   });
 
 const calcSafeDelay = firewall => {
-  const initialFirewall = firewall;
-  let picoseconds = 0;
+  let delay = 0;
   let safe = false;
 
   while (!safe) {
-    for (let iter = 0; iter < picoseconds; iter++) {
-      firewall = scanFirewall(firewall);
-    }
-
-    for (let depth = 0; depth < firewall.length; depth++) {
-      if (firewall[depth] && firewall[depth].scanPosition === 0) {
+    console.log('delay', delay);
+    for (let idx = 0; idx < firewall.length; idx++) {
+      safe = true;
+      if (
+        firewall[idx] &&
+        (delay + idx) % ((firewall[idx].range - 1) * 2) === 0
+      ) {
+        safe = false;
         break;
-      } else if (depth === firewall.length - 1) {
-        safe = true;
-      } else {
-        firewall = scanFirewall(firewall);
       }
     }
-    if (safe) break;
 
-    firewall = initialFirewall;
-    picoseconds++;
+    delay++;
   }
 
-  return picoseconds;
+  return delay;
 };
 // console.log('firewall', createFirewall(sanitizedInput).length);
 console.log('output:', calcSafeDelay(createFirewall(sanitizedInput)));
