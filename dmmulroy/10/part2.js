@@ -10,13 +10,13 @@ const createList = () => {
 
 const convertToASCII = str => str.split('').map(char => char.charCodeAt());
 
-const knotHash = (list, lengths) => {
-  let copiedList = [].concat(list);
+const knotHash = input => {
+  let copiedList = createList();
   let skip = 0;
   let currentPos = 0;
   let denseHash = [];
 
-  const asciiLengths = convertToASCII(lengths).concat(...[17, 31, 73, 47, 23]);
+  const asciiLengths = convertToASCII(input).concat(...[17, 31, 73, 47, 23]);
 
   for (let rounds = 0; rounds < 64; rounds++) {
     asciiLengths.forEach(length => {
@@ -52,7 +52,7 @@ const knotHash = (list, lengths) => {
     })
     .join('');
 };
-
-console.log(knotHash(createList(), lengths));
+// uncomment for output/answer
+// console.log(knotHash(lengths));
 
 module.exports = knotHash;

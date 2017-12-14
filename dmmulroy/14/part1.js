@@ -2,26 +2,41 @@ const knotHash = require('../10/part2');
 
 const input = 'jxqlasbh';
 
-const createList = () => {
+const createList = (size = 256) => {
   let list = [];
-  for (let idx = 0; idx < 128; idx++) {
+  for (let idx = 0; idx < size; idx++) {
     list[idx] = idx;
   }
   return list;
 };
 
-const createKnotHashList = (list, input) =>
-  list.map(idx => knotHash(list, `${input}-${idx}`));
+const zeropad = str =>
+  str.length === 4 ? str : `${new Array(4 - str.length + 1).join('0')}${str}`;
+
+const createKnotHashList = (list, input) => {
+  const _list = createList();
+  return list.map(idx => knotHash(`${input}-${idx}`));
+};
 
 const convertKnotHashToBinary = knotHash =>
   knotHash
-    .match(/.{1,2}/)
-    .map(hex => parseInt(hex, 16).toString(2))
+    .split('')
+    .map(hex => zeropad(parseInt(hex, 16).toString(2)))
     .join('');
 
-const countUsedSquares = matrix => {};
+convertBinaryListToMatrix = binaryList =>
+  binaryList.map(row => row.split('').map(Number));
+
+const countUsedSquares = matrix =>
+  matrix.reduce((used, row) => {
+    return (used += row.reduce((sum, byte) => (sum += byte), 0));
+  }, 0);
 
 console.log(
-  'knotHashList',
-  createKnotHashList(createList(), input).map(convertKnotHashToBinary)
+  'ouput:',
+  countUsedSquares(
+    convertBinaryListToMatrix(
+      createKnotHashList(createList(128), input).map(convertKnotHashToBinary)
+    )
+  )
 );
