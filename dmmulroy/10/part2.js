@@ -1,4 +1,4 @@
-// const lengths = '120,93,0,90,5,80,129,74,1,165,204,255,254,2,50,113';
+const lengths = '120,93,0,90,5,80,129,74,1,165,204,255,254,2,50,113';
 
 const createList = () => {
   let list = [];
@@ -53,6 +53,6 @@ const knotHash = (list, lengths) => {
     .join('');
 };
 
-// console.log(knotHash(createList(), convertToASCII(lengths)));
+console.log(knotHash(createList(), lengths));
 
 module.exports = knotHash;
