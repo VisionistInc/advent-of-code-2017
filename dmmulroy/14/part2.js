@@ -27,22 +27,15 @@ const convertKnotHashToBinary = knotHash =>
 convertBinaryListToMatrix = binaryList =>
   binaryList.map(row => row.split('').map(Number));
 
-const matrix = [
-  [1, 1, 0, 0, 0],
-  [0, 1, 0, 0, 1],
-  [1, 0, 0, 1, 1],
-  [0, 0, 0, 0, 0],
-  [1, 0, 1, 0, 1]
-];
-// convertBinaryListToMatrix(
-//   createKnotHashList(createList(128), input).map(convertKnotHashToBinary)
-// );
+const matrix = convertBinaryListToMatrix(
+  createKnotHashList(createList(128), input).map(convertKnotHashToBinary)
+);
 
 const isSafe = (martix, row, column, visited) =>
   row >= 0 &&
-  row < 5 &&
+  row < 128 &&
   column >= 0 &&
-  column < 5 &&
+  column < 128 &&
   (matrix[row][column] === 1 && !visited[row][column]);
 
 const dfs = (matrix, row, column, visited) => {
@@ -72,11 +65,11 @@ const dfs = (matrix, row, column, visited) => {
 };
 
 const countRegions = matrix => {
-  let visited = createList(5).map(x => createList(5));
+  let visited = createList(128).map(x => createList(128).map(y => false));
   let count = 0;
 
-  for (let row = 0; row < 5; row++) {
-    for (let column = 0; column < 5; column++) {
+  for (let row = 0; row < 128; row++) {
+    for (let column = 0; column < 128; column++) {
       if (matrix[row][column] === 1 && !visited[row][column]) {
         dfs(matrix, row, column, visited);
         count++;
