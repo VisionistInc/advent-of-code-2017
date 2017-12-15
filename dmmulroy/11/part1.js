@@ -34,7 +34,7 @@ const calcShortestPath = steps =>
           prev.z++;
           break;
         default:
-          throw new Error('Wtf happened');
+          throw new Error('Something went wrong');
           break;
       }
 
