@@ -7,7 +7,10 @@ const sanitizedInput = input.trim().split(',');
 
 // thank god for https://www.redblobgames.com/grids/hexagons/#neighbors
 
-const calcShortestPath = steps =>
+const calcDistance = ({ x, y, z }) =>
+  (Math.abs(x - 0) + Math.abs(y - 0) + Math.abs(z - 0)) / 2;
+
+const calcMaxDistance = steps =>
   steps.reduce(
     (prev, curr, idx) => {
       switch (curr) {
@@ -40,12 +43,11 @@ const calcShortestPath = steps =>
           break;
       }
 
-      return idx === steps.length - 1
-        ? (Math.abs(prev.x - 0) + Math.abs(prev.y - 0) + Math.abs(prev.z - 0)) /
-            2
-        : prev;
+      prev.max = Math.max(prev.max, calcDistance(prev));
+
+      return idx === steps.length - 1 ? prev.max : prev;
     },
-    { x: 0, y: 0, z: 0 }
+    { x: 0, y: 0, z: 0, max: 0 }
   );
 
-console.log('output:', calcShortestPath(sanitizedInput));
+console.log('output:', calcMaxDistance(sanitizedInput));
