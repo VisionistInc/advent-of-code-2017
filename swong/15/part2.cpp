@@ -10,8 +10,7 @@ int main() {
   int divisor = 2147483647;
 
   int judgeCount = 0;
-
-  // perform this 40 million times
+  
   for (int i=0; i<5000000; ++i) {
     do {
       genA = (genA * genAFactor) % divisor;
