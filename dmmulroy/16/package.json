@@ -1,0 +1,14 @@
+{
+  "name": "16",
+  "version": "1.0.0",
+  "description": "",
+  "main": "part1.2.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "lodash.memoize": "^4.1.2"
+  }
+}
