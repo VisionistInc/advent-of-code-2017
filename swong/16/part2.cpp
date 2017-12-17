@@ -4,6 +4,7 @@
 #include <regex>
 #include <string>
 #include <vector>
+#include <map>
 using namespace std;
 
 void reverse(string &programs, int amount) {
@@ -55,6 +56,7 @@ int main() {
   regex pattern("([a-z])([a-z0-9]+)\\/?(.*)");
   vector<vector<string>>danceMoves;
   smatch match;
+  map<string, int> prev;
 
   // create the initial array
   string programs = "abcdefghijklmnop";
@@ -70,8 +72,17 @@ int main() {
     danceMoves.push_back(temp);
   }
 
-  for (vector<string> move: danceMoves) {
-    executeMove(programs, move);
+  for (int i=1; i<=1000000000; ++i) {
+    for (vector<string> move: danceMoves) {
+      executeMove(programs, move);
+    }
+
+    if(prev.count(programs)) {
+      if((1000000000 - i) % (i - prev[programs]) == 0) {
+        break;
+      }
+    }
+    prev[programs] = i;
   }
 
   cout << programs << "\n";
