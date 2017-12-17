@@ -6,7 +6,7 @@
 #include <vector>
 using namespace std;
 
-void reverse(char (&programs)[16], int amount) {
+void reverse(string &programs, int amount) {
   vector<char>temp;
 
   // copy the elements to be shifted to the end
@@ -17,19 +17,19 @@ void reverse(char (&programs)[16], int amount) {
   for (int i=0; i<temp.size(); ++i) programs[i+amount] = temp[i];
 }
 
-void swap(char (&programs)[16], int A, int B) {
+void swap(string &programs, int A, int B) {
   char temp = programs[A];
   programs[A] = programs[B];
   programs[B] = temp;
 }
 
-int findIndex(char (&programs)[16], char seek) {
+int findIndex(string &programs, char seek) {
   for (int i=0; i<16; ++i) {
     if (programs[i] == seek) return i;
   }
 }
 
-void swap(char (&programs)[16], string A, string B) {
+void swap(string &programs, string A, string B) {
   char swapA = A[0];
   char swapB = B[0];
 
@@ -39,12 +39,12 @@ void swap(char (&programs)[16], string A, string B) {
   swap(programs, indexA, indexB);
 }
 
-void executeMove(char (&programs)[16], smatch match) {
-  if (match[1] == 's') {
+void executeMove(string &programs, vector<string> match) {
+  if (match[1] == "s") {
     reverse(programs, stoi(match[2]));
-  } else if (match[1] == 'x') {
+  } else if (match[1] == "x") {
     swap(programs, stoi(match[2]), stoi(match[3]));
-  } else if (match[1] == 'p') {
+  } else if (match[1] == "p") {
     swap(programs, match[2], match[3]);
   }
 }
@@ -53,17 +53,25 @@ int main() {
   ifstream inputFile("./input.txt");
   string danceMove;
   regex pattern("([a-z])([a-z0-9]+)\\/?(.*)");
+  vector<vector<string>>danceMoves;
   smatch match;
 
   // create the initial array
-  char programs[16] = { 'a', 'b', 'c', 'd', 'e', 'f', 'g',
-  'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p' };
+  string programs = "abcdefghijklmnop";
 
   while (getline(inputFile, danceMove, ',')) {
-    bool result = regex_search(danceMove, match, pattern);
-    if (result) {
-      executeMove(programs, match);
-    }
+    regex_search(danceMove, match, pattern);
+    vector<string>temp;
+    temp.push_back(match[0]);
+    temp.push_back(match[1]);
+    temp.push_back(match[2]);
+    temp.push_back(match[3]);
+
+    danceMoves.push_back(temp);
+  }
+
+  for (vector<string> move: danceMoves) {
+    executeMove(programs, move);
   }
 
   for (char program: programs) cout << program << "";
