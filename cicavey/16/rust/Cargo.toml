@@ -1,0 +1,7 @@
+[package]
+name = "day16"
+version = "0.0.1"
+authors = ["cicavey@visionistinc.com"]
+
+[dependencies]
+modulo = "0.1.2"
