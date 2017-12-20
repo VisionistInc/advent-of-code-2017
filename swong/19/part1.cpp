@@ -6,24 +6,30 @@ using namespace std;
 
 bool traverseMaze (vector<string>maze, int &x_loc, int &y_loc, char &direction, vector<char>&pathTaken, int maxX, int maxY) {
   char currVal = maze[y_loc][x_loc];
-
+  
   if (currVal == ' ') return false;
   else if (currVal == '|') {
-    if (direction == 'S') ++y_loc;
-    else if (direction == 'N') --y_loc;
-    else if (direction == 'E') ++x_loc;
-    else if (direction == 'W') --x_loc;
+    switch (direction) {
+      case 'S': ++y_loc; break;
+      case 'N': --y_loc; break;
+      case 'E': ++x_loc; break;
+      case 'W': --x_loc; break;
+    }
   } else if (isalpha(currVal)) {
     pathTaken.push_back(currVal);
-    if (direction == 'S') ++y_loc;
-    else if (direction == 'N') --y_loc;
-    else if (direction == 'E') ++x_loc;
-    else if (direction == 'W') --x_loc;
+    switch (direction) {
+      case 'S': ++y_loc; break;
+      case 'N': --y_loc; break;
+      case 'E': ++x_loc; break;
+      case 'W': --x_loc; break;
+    }
   } else if (currVal == '-') {
-    if (direction == 'E') ++x_loc;
-    else if (direction == 'W') --x_loc;
-    else if (direction == 'N') --y_loc;
-    else if (direction == 'S') ++y_loc;
+    switch (direction) {
+      case 'E': ++x_loc; break;
+      case 'W': --x_loc; break;
+      case 'N': --y_loc; break;
+      case 'S': ++y_loc; break;
+    }
   } else if (currVal == '+') {
     if (direction == 'S' || direction == 'N') {
       if (x_loc-1 < 0) {
