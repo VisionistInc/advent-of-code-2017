@@ -79,40 +79,46 @@ def diverging(l):
     # for every particle, add their acceleration and their position
     # for each direction
     for part in l:
-        x.append([part.acc[0], part.pos[0]])
-        y.append([part.acc[1], part.pos[1]])
-        z.append([part.acc[2], part.pos[2]])
+        x.append([part.acc[0], part.vel[0], part.pos[0]])
+        y.append([part.acc[1], part.vel[1], part.pos[1]])
+        z.append([part.acc[2], part.vel[2], part.pos[2]])
     # now sort based on the acceleration first
     # then the position along the axis second
-    x = sorted(x, key=lambda j: (j[0], j[1]))
-    y = sorted(y, key=lambda j: (j[0], j[1]))
-    z = sorted(z, key=lambda j: (j[0], j[1]))
+    x = sorted(x, key=lambda j: (j[0], j[1], j[2]))
+    y = sorted(y, key=lambda j: (j[0], j[1], j[2]))
+    z = sorted(z, key=lambda j: (j[0], j[1], j[2]))
 
     # now we have everything in acceleration order
-    # if the positions are also in order
+    # if the positions and velocity are also in order
     # then it will be impossible for a lesser position to overtake
     # a larger one, since the larger one should be accelerating at
     # or faster than the lesser one
 
-    # if we find any positions out of order, we haven't
+    # if we find any positions or velocity out of order, we haven't
     # reached a steady state yet, so particles can still collide
-    pos = x[0][1]
+    pos = x[0][2]
+    vel = x[0][1]
     for l in x[1:]:
-        if l[1] < pos:
+        if l[1] < vel or l[2] < pos:
             return False
-        pos = l[1]
+        pos = l[2]
+        vel = l[1]
     
-    pos = y[0][1]
+    pos = y[0][2]
+    vel = y[0][1]
     for l in y[1:]:
-        if l[1] < pos:
+        if l[1] < vel or l[2] < pos:
             return False
-        pos = l[1]
+        pos = l[2]
+        vel = l[1]
     
-    pos = z[0][1]
+    pos = z[0][2]
+    vel = z[0][1]
     for l in z[1:]:
-        if l[1] < pos:
+        if l[1] < vel or l[2] < pos:
             return False
-        pos = l[1]
+        pos = l[2]
+        vel = l[1]
     return True
 
 with open("input") as f:
