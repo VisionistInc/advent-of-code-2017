@@ -224,7 +224,39 @@ jmp label_2
 
 ##############################################
 
-Now let's make the loops more readable.  The label_4 loop looks the like the inner most, a good palce to start.  If e - b /= 0, it loops back around.  This can be translated into while (e /= b).  So lets replace label_4 with a do while
+Many of those if statements are checking to see if x - y /= 0.  This can easily be rewritten as if x /= y for clarity.  Let's do that
+
+####################################
+
+b = 105700
+c = 122700
+
+label_2:
+f = 1
+d = 2
+
+label_5:
+e = 2
+
+label_4:
+if (d * e) == b:
+    f = 0
+e += 1
+if e /= b:
+    jmp label_4
+d += 1
+if d /= b:
+    jmp label_5
+if f == 0:
+    h += 1
+if b == c:
+    exit
+b += 17
+jmp label_2
+
+##############################################
+
+Now let's make the loops more readable.  The label_4 loop looks the like the inner most, a good palce to start.  If e /= b, it loops back around.  So lets replace label_4 with a do while (e /= b)
 
 ####################################
 
@@ -239,23 +271,23 @@ label_5:
 e = 2
 
 do:
-    if ((d * e) - b) == 0:
+    if (d * e) == b:
         f = 0
     e += 1
 while (e /= b)
 d += 1
-if (d - b) /= 0:
+if d /= b:
     jmp label_5
 if f == 0:
     h += 1
-if (b - c) == 0:
+if b == c:
     exit
 b += 17
 jmp label_2
 
 ##############################################
 
-Now look at label_5, it behaves similarly to label_4.  if (d - b) /= 0 it loops back around (aka while (d /= b)).  So let's replace that with a do while
+Now look at label_5, it behaves similarly to label_4.  If d /= b it loops back around.  So let's replace that with a do while
 
 ####################################
 
@@ -269,7 +301,7 @@ d = 2
 do:
     e = 2
     do:
-        if ((d * e) - b) == 0:
+        if (d * e) == b:
             f = 0
         e += 1
     while (e /= b)
@@ -277,7 +309,7 @@ do:
 while (d /= b):
 if f == 0:
     h += 1
-if (b - c) == 0:
+if b == c:
     exit
 b += 17
 jmp label_2
@@ -294,7 +326,7 @@ for (b = 105700; b <= 122700; b+= 17):
     do:
         e = 2
         do:
-            if ((d * e) - b) == 0:
+            if (d * e) == b:
                 f = 0
             e += 1
         while (e /= b)
@@ -307,13 +339,9 @@ for (b = 105700; b <= 122700; b+= 17):
 
 Now to figure out what 'h' will become.  Each time through the loop, 'h' gets incremented only if 'f' is 0.  'f' is initialized to 1 and only gets set to 0 on the following condition:
 
-if ((d * e) - b) == 0:
-
-or reworded:
-
 if (d * e) == b:
 
-So 'f' is only cleared if 'd' and 'e' are multiples of 'f'.  'd' and 'e' are both the loop variables for the two inner loops, starting at 2 and increasing up to 'b'.  We notice that for any one time through the for loop, 'f' is set, and only cleared if some combiniation of 'e' and 'd' are multiples of 'b' for that loop.
+So 'f' is only cleared if 'd' and 'e' are multiples of 'f'.  'd' and 'e' are both the loop variables for the two inner loops, starting at 2 and increasing up to 'b'.  We notice that for any one time through the for loop, 'f' is set, and cleared any time some combiniation of 'e' and 'd' are multiples of 'b' for that loop.
 
 It appears that they are trying to determine if 'b' is a prime number each time throguh the loop.  If not, the flag is cleared and 'h' is incremented.
 
