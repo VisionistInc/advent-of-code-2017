@@ -1,0 +1,339 @@
+First step, add labels and make it more readable with jumps and assignments.  The input now becomes:
+
+########################
+
+b = 57
+c = b
+if a /= 0 jmp label_1
+jmp label_2
+
+label_1:
+b *= 100
+b -= -100000
+c = b
+c -= -17000
+
+label_2:
+f = 1
+d = 2
+
+label_5:
+e = 2
+
+label_4:
+g = d
+g *= e
+g -= b
+if g /= 0 jmp label_3
+f = 0
+
+label_3:
+e -= -1
+g = e
+g -= b
+if g /= 0 jmp label_4
+d -= -1
+g = d
+g -= b
+if g /= 0 jmp label_5
+
+if f /= 0 jmp label_6
+h -= -1
+
+label_6:
+g = b
+g -= c
+if g /= 0 jmp label_7
+jmp label_8
+
+label_7:
+b -= -17
+jmp label_2
+
+label_8:
+
+#################################
+
+Now the it is clearer to read, we see some jumps that look like if statements.  For example:
+
+if g /= 0 jmp label_3
+f = 0
+
+label_3:
+
+Can be written as
+
+if g == 0:
+    f = 0
+
+Also, we notrice that label 8 is the end of the program, so any jump to that is basically a call to exit()
+
+So we'll reduce based on these facts:
+
+####################################
+
+b = 57
+c = b
+if a == 0:
+    b *= 100
+    b -= -100000
+    c = b
+    c -= -17000
+
+label_2:
+f = 1
+d = 2
+
+label_5:
+e = 2
+
+label_4:
+g = d
+g *= e
+g -= b
+if g == 0:
+    f = 0
+e -= -1
+g = e
+g -= b
+if g /= 0 jmp label_4
+d -= -1
+g = d
+g -= b
+if g /= 0 jmp label_5
+if f == 0:
+    h -= -1
+g = b
+g -= c
+if g == 0:
+    exit
+b -= -17
+jmp label_2
+
+##############################################
+
+We've reduced to 3 labels!  And they are all jumped to from further in the program.  Most liekly loops.
+
+First we'll focus on the first few lines.  Since they are only called once (nothing loops back to them)
+they are liekly initializing some variables.  We know 'a' is one from the problem statement, so the if block
+will hit.  It's pretty easy to do the math and figure out what 'b' and 'c' are initialized to.
+
+In this step, we'll also change all the -= negatives to += postiives for readability
+
+####################################
+
+b = 105700
+c = 122700
+
+label_2:
+f = 1
+d = 2
+
+label_5:
+e = 2
+
+label_4:
+g = d
+g *= e
+g -= b
+if g == 0:
+    f = 0
+e += 1
+g = e
+g -= b
+if g /= 0 jmp label_4
+d += 1
+g = d
+g -= b
+if g /= 0 jmp label_5
+if f == 0:
+    h += 1
+g = b
+g -= c
+if g == 0:
+    exit
+b += 17
+jmp label_2
+
+##############################################
+
+In this program, 'g' appears to be used a lot as a math register.  We can combine many of the consecutive
+operations on 'g' to make it more readable
+
+####################################
+
+b = 105700
+c = 122700
+
+label_2:
+f = 1
+d = 2
+
+label_5:
+e = 2
+
+label_4:
+g = (d * e) - b
+if g == 0:
+    f = 0
+e += 1
+g = e - b
+if g /= 0 jmp label_4
+d += 1
+g = d - b
+if g /= 0 jmp label_5
+if f == 0:
+    h += 1
+g = b - c
+if g == 0:
+    exit
+b += 17
+jmp label_2
+
+##############################################
+
+Let's just get rid of 'g' now from the if statements so we can really see what the comparisons are
+
+####################################
+
+b = 105700
+c = 122700
+
+label_2:
+f = 1
+d = 2
+
+label_5:
+e = 2
+
+label_4:
+if ((d * e) - b) == 0:
+    f = 0
+e += 1
+if (e - b) /= 0:
+    jmp label_4
+d += 1
+if (d - b) /= 0:
+    jmp label_5
+if f == 0:
+    h += 1
+if (b - c) == 0:
+    exit
+b += 17
+jmp label_2
+
+##############################################
+
+Now let's make the loops more readable.  The label_4 loop looks the like the inner most, a good palce to start.  If e - b /= 0, it loops back around.  This can be translated into while (e /= b).  So lets replace label_4 with a do while
+
+####################################
+
+b = 105700
+c = 122700
+
+label_2:
+f = 1
+d = 2
+
+label_5:
+e = 2
+
+do:
+    if ((d * e) - b) == 0:
+        f = 0
+    e += 1
+while (e /= b)
+d += 1
+if (d - b) /= 0:
+    jmp label_5
+if f == 0:
+    h += 1
+if (b - c) == 0:
+    exit
+b += 17
+jmp label_2
+
+##############################################
+
+Now look at label_5, it behaves similarly to label_4.  if (d - b) /= 0 it loops back around (aka while (d /= b)).  So let's replace that with a do while
+
+####################################
+
+b = 105700
+c = 122700
+
+label_2:
+f = 1
+d = 2
+
+do:
+    e = 2
+    do:
+        if ((d * e) - b) == 0:
+            f = 0
+        e += 1
+    while (e /= b)
+    d += 1
+while (d /= b):
+if f == 0:
+    h += 1
+if (b - c) == 0:
+    exit
+b += 17
+jmp label_2
+
+##############################################
+
+The last loop, the main loop, label_2, is comparing 'b' and 'c' and if they equal, the program is done.  If not, 'b' is incremented by 17 and the loop restarts.  Given that we know what b and c are to start, we can write a for loop to handle this: for (b = 105700; b <= 122700; b += 17).  Notice we have to do <= because the loop executes one time even when 'b' and 'c' are equal.  So let's write it as:
+
+####################################
+
+for (b = 105700; b <= 122700; b+= 17):
+    f = 1
+    d = 2
+    do:
+        e = 2
+        do:
+            if ((d * e) - b) == 0:
+                f = 0
+            e += 1
+        while (e /= b)
+        d += 1
+    while (d /= b):
+    if f == 0:
+        h += 1
+
+##############################################
+
+Now to figure out what 'h' will become.  Each time through the loop, 'h' gets incremented only if 'f' is 0.  'f' is initialized to 1 and only gets set to 0 on the following condition:
+
+if ((d * e) - b) == 0:
+
+or reworded:
+
+if (d * e) == b:
+
+So 'f' is only cleared if 'd' and 'e' are multiples of 'f'.  'd' and 'e' are both the loop variables for the two inner loops, starting at 2 and increasing up to 'b'.  We notice that for any one time through the for loop, 'f' is set, and only cleared if some combiniation of 'e' and 'd' are multiples of 'b' for that loop.
+
+It appears that they are trying to determine if 'b' is a prime number each time throguh the loop.  If not, the flag is cleared and 'h' is incremented.
+
+Rather than looping over every possible value for 'd' and 'e' each time through, we can check if 'd' goes into 'b' evenly, for all values of 'd' up to 'b'
+
+####################################
+
+for (b = 105700; b <= 122700; b += 17):
+    f = 1
+    # no need to go beyound half of b
+    for (d = 2; d < (b//2); d += 1):
+        if (b % d) == 0
+            f = 0
+            # no need to check others if we found 1 factor
+            break
+    if f == 0:
+        h += 1
+
+##############################################
+
+This reduced code should run much faster than looping (105700+)^2 times for each value of 'b'
+
+See sol2.py
