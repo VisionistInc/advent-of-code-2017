@@ -22,6 +22,8 @@ mod day18;
 
 mod day23;
 
+mod day25;
+
 fn main() {
     let stdin = stdin();
     let handle = stdin.lock();
@@ -56,6 +58,8 @@ fn main() {
         "day18" => day18::solve(&mut (handle.lines())),
 
         "day23" => day23::solve(&mut (handle.lines())),
+
+        "day25" => day25::solve(&mut (handle.lines())),
 
         _ => println!("Unknown day0: {}", args[1]),
     }
